@@ -1,5 +1,5 @@
 @host = http://localhost:8080
 
 ### Retrieve States
-GET {{host}}/api/states/all-states
+GET {{host}}/api/states?q=new&limit=20&offset=0
 

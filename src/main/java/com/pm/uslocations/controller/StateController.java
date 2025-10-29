@@ -23,7 +23,7 @@ public class StateController {
      * Example:
      * GET /api/states?q=new&limit=20&offset=0
      */
-    @GetMapping(name = "all-states")
+    @GetMapping
     public List<StateResponseDto> list(
             @RequestParam(required = false) String q,
             @RequestParam(required = false, defaultValue = "50") Integer limit,
