@@ -30,7 +30,7 @@ public class Place {
     @Column(name = "place_type", nullable = false)
     private PlaceType placeType;
 
-    @Column(name = "place_fips", length = 7)
+    @Column(name = "place_fips", length = 7, columnDefinition = "bpchar")
     private String placeFips;
 
     @Column(name = "latitude", precision = 9, scale = 6)

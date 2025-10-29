@@ -15,16 +15,16 @@ public class State {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "state_code", nullable = false, unique = true, length = 2)
+    @Column(name = "state_code", nullable = false, unique = true, length = 2, columnDefinition = "bpchar")
     private String stateCode;
 
     @Column(name = "name", nullable = false, unique = true, columnDefinition = "citext")
     private String name;
 
-    @Column(name = "fips", nullable = false, unique = true, length = 2)
+    @Column(name = "fips", nullable = false, unique = true, length = 2, columnDefinition = "bpchar")
     private String fips;
 
-    @Column(name = "postal_abbr", nullable = false, unique = true, length = 2)
+    @Column(name = "postal_abbr", nullable = false, unique = true, length = 2, columnDefinition = "bpchar")
     private String postalAbbr;
 
     @Column(name = "capital", columnDefinition = "citext")

@@ -1,6 +1,5 @@
 package com.pm.uslocations.model;
 
-import com.pm.uslocations.model.State;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +21,7 @@ public class County {
     @Column(name = "name", nullable = false, columnDefinition = "citext")
     private String name;
 
-    @Column(name = "county_fips", nullable = false, unique = true, length = 5)
+    @Column(name = "county_fips", nullable = false, unique = true, columnDefinition = "bpchar")
     private String countyFips;
 
     @Column(name = "seat", columnDefinition = "citext")
