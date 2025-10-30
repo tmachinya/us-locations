@@ -35,7 +35,9 @@ public class StateServiceImpl implements StateService {
         Pageable pageable = PageRequest.of(page, safeLimit);
 
         List<State> states = stateRepository.search(q, pageable);
-        return states.stream().map(StateMapper::toResponseDto).toList();
+
+        List<State> allStates = stateRepository.findAll();
+        return allStates.stream().map(StateMapper::toResponseDto).toList();
     }
 
     @Override

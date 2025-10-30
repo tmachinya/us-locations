@@ -41,4 +41,6 @@ public interface StateRepository extends JpaRepository<State, Integer> {
         ORDER BY s.name ASC
         """)
     List<State> search(@Param("q") String q, Pageable pageable);
+
+    List<State> findAll();
 }
