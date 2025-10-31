@@ -1,7 +1,57 @@
 @host = http://localhost:8080
 
-### Retrieve States
-GET {{host}}/api/states
+### Retrieve Specific States
+GET {{host}}/api/states?q=Texas&limit=20&offset=0
+
+### Retrieve All States
+GET {{host}}/api/states/all-states
+
+### Selecting 1 state
+GET {{host}}/api/states/5
+
+### Get state by Capital
+GET {{host}}/api/states/capital/Austin
+
+### Updating a state
+PUT {{host}}/api/states/5
+Content-Type: application/json
+
+{
+  "stateCode": "MD",
+  "name": "Maryland",
+  "fips": "60",
+  "postalAbbr": "MD",
+  "capital": "Bladensburg",
+  "areaSqMi": 630000,
+  "populationEst": 60000,
+  "timeZoneIds": [1,2]
+}
+
+
+### Inserting a state / creating a state
+POST {{host}}/api/states
+Content-Type: application/json
+
+{
+  "stateCode": "MD",
+  "name": "Maryland",
+  "fips": "60",
+  "postalAbbr": "MD",
+  "capital": "Silver Spring",
+  "areaSqMi": 45866554,
+  "populationEst": 60000,
+  "timeZoneIds": [1,2]
+}
+
+### Deleting a state
+DELETE {{host}}/api/states/5
+
+
+
+
+
+
+
 
 
 

@@ -31,6 +31,12 @@ public class StateController {
         return stateService.list(q, limit, offset);
     }
 
+
+    @GetMapping("/all-states")
+    public List<StateResponseDto> listAllStates() {
+        return stateService.listAllStates();
+    }
+
     /**
      * Get a state by its ID.
      * Example: GET /api/states/1
@@ -47,6 +53,11 @@ public class StateController {
     @GetMapping("/code/{code}")
     public StateResponseDto getByCode(@PathVariable String code) {
         return stateService.getByCode(code);
+    }
+
+    @GetMapping("/capital/{capital}")
+    public StateResponseDto getByCapital(@PathVariable String capital) {
+        return stateService.getByCapital(capital);
     }
 
     /**

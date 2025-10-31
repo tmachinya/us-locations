@@ -36,8 +36,17 @@ public class StateServiceImpl implements StateService {
 
         List<State> states = stateRepository.search(q, pageable);
 
-        List<State> allStates = stateRepository.findAll();
-        return allStates.stream().map(StateMapper::toResponseDto).toList();
+        return states.stream().map(StateMapper::toResponseDto).toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StateResponseDto> listAllStates() {
+
+        return stateRepository
+                .findAll()
+                .stream()
+                .map(StateMapper::toResponseDto).toList();
     }
 
     @Override
@@ -54,6 +63,16 @@ public class StateServiceImpl implements StateService {
         State s = stateRepository.findByStateCodeIgnoreCase(code)
                 .orElseThrow(() -> new EntityNotFoundException("State not found: code=" + code));
         return StateMapper.toResponseDto(s);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public StateResponseDto getByCapital(String capital) {
+        State stateWithCapital = stateRepository.findByCapitalIgnoreCase(capital);
+        if (stateWithCapital == null) {
+            throw new EntityNotFoundException("State not found: capital=" + capital);
+        }
+        return StateMapper.toResponseDto(stateWithCapital);
     }
 
     @Override

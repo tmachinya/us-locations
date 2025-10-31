@@ -11,18 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface StateRepository extends JpaRepository<State, Integer> {
-
     /**
      * Find a state by its 2-letter state code (case-insensitive).
      * Example: "NY" → New York
      */
     Optional<State> findByStateCodeIgnoreCase(String code);
-
-    /**
-     * Find a state by its name (case-insensitive).
-     * Example: "Texas" → Texas
-     */
-    Optional<State> findByNameIgnoreCase(String name);
 
     /**
      * Flexible search query that supports partial name matches
@@ -42,5 +35,6 @@ public interface StateRepository extends JpaRepository<State, Integer> {
         """)
     List<State> search(@Param("q") String q, Pageable pageable);
 
-    List<State> findAll();
+    State findByCapitalIgnoreCase(String capital);
+
 }

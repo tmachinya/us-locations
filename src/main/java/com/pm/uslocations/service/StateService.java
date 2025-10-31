@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface StateService {
     List<StateResponseDto> list(String q, Integer limit, Integer offset);
+    List<StateResponseDto> listAllStates();
     StateResponseDto getById(Integer id);
     StateResponseDto getByCode(String code);
     StateResponseDto create(StateRequestDto dto);
     StateResponseDto update(Integer id, StateRequestDto dto);
+    StateResponseDto getByCapital(String capital);
     void delete(Integer id);
 }
