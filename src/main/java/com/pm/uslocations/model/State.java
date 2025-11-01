@@ -11,7 +11,9 @@ import java.util.Set;
 @Entity
 @Table(name = "states")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class State {
+public class
+
+State {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
