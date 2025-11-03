@@ -104,8 +104,29 @@ Content-Type: application/json
 }
 
 
+### Retrieve All Places
+GET {{host}}/api/places/all-places
 
+### Retrieve by ID
+GET {{host}}/api/places/1
 
+### Retrieve by FIPS Code
+GET {{host}}/api/places/fips/0644000
 
+### Retrieve All Cities in a State
+GET {{host}}/api/places?stateId=1&type=CITY
 
+### Create a Place
+POST {{host}}/api/places
+Content-Type: application/json
 
+{
+  "stateId": 1,
+  "countyId": 3,
+  "name": "Boulder",
+  "placeType": "CITY",
+  "placeFips": "08013A1",
+  "latitude": 40.015,
+  "longitude": -105.2705,
+  "elevationFt": 5430
+}
