@@ -130,3 +130,6 @@ Content-Type: application/json
   "longitude": -105.2705,
   "elevationFt": 5430
 }
+
+### Delete a Place
+DELETE {{host}}/api/places/5
