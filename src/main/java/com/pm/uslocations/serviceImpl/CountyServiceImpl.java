@@ -10,12 +10,14 @@ import com.pm.uslocations.repo.StateRepository;
 import com.pm.uslocations.service.CountyService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -38,15 +40,41 @@ public class CountyServiceImpl implements CountyService {
     @Override
     @Transactional(readOnly = true)
     public List<CountyResponseDto> list(String q, Integer stateId, Integer limit, Integer offset) {
+
         int safeLimit  = (limit  == null || limit  <= 0 || limit  > 200) ? 50 : limit;
         int off        = (offset == null || offset <  0) ? 0  : offset;
         int page       = off / safeLimit;
         Pageable pageable = PageRequest.of(page, safeLimit);
 
-        List<County> counties = countyRepository.search(q, stateId, pageable);
-        return counties.stream().map(CountyMapper::toResponseDto).toList();
-    }
+        // 1) If q is null/blank → do NOT involve it in the query at all
+        if (q == null || q.isBlank()) {
+            Page<County> resultPage;
 
+            if (stateId == null) {
+                // all counties, paged (if you want this)
+                resultPage = countyRepository.findAll(pageable);
+            } else {
+                // only counties for that state
+                resultPage = countyRepository.findByState_Id(stateId, pageable);
+            }
+
+            return resultPage
+                    .getContent()
+                    .stream()
+                    .map(CountyMapper::toResponseDto)
+                    .toList();
+        }
+
+        // 2) q is present → precompute lower/upper in Java
+        String qLower = q.toLowerCase(Locale.ROOT);
+        String qUpper = q.toUpperCase(Locale.ROOT);
+
+        List<County> counties = countyRepository.search(q, qLower, qUpper, stateId, pageable);
+
+        return counties.stream()
+                .map(CountyMapper::toResponseDto)
+                .toList();
+    }
     @Override
     @Transactional(readOnly = true)
     public CountyResponseDto getById(Integer id) {

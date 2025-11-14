@@ -18,13 +18,13 @@ public class County {
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "state_id", nullable = false)
     private State state;
 
-    @Column(name = "name", nullable = false, columnDefinition = "citext")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "county_fips", nullable = false, unique = true, columnDefinition = "bpchar")
     private String countyFips;
 
-    @Column(name = "seat", columnDefinition = "citext")
+    @Column(name = "seat")
     private String seat;
 
     @Column(name = "created_at", insertable = false, updatable = false)

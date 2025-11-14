@@ -133,3 +133,6 @@ Content-Type: application/json
 
 ### Delete a Place
 DELETE {{host}}/api/places/5
+
+### Get the counties which belong to a state
+http://localhost:8080/api/counties?stateId=11&limit=50&offset=0
