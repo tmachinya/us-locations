@@ -27,7 +27,7 @@ public class Place {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "place_type", nullable = false)
+    @Column(name = "place_type", nullable = false, length = 50)
     private PlaceType placeType;
 
     @Column(name = "place_fips", length = 7, columnDefinition = "bpchar")

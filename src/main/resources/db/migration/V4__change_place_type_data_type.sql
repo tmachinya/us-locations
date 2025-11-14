@@ -1,0 +1,2 @@
+ALTER TABLE places
+    ALTER COLUMN place_type TYPE VARCHAR(50);
