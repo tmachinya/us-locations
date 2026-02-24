@@ -5,6 +5,9 @@ import com.pm.uslocations.dto.response.StateResponseDto;
 import com.pm.uslocations.service.StateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +26,9 @@ public class StateController {
     private final StateService stateService;
 
     @Operation(summary = "List states", description = "Returns a paged list of states. Optionally filter by name, state code, or postal abbreviation.")
-    @ApiResponse(responseCode = "200", description = "List of states")
+    @ApiResponse(responseCode = "200", description = "List of states",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = StateResponseDto.class))))
     @GetMapping
     public List<StateResponseDto> list(
             @Parameter(description = "Search term — partial name, or exact state code / postal abbreviation") @RequestParam(required = false) String q,
@@ -33,7 +38,9 @@ public class StateController {
     }
 
     @Operation(summary = "List all states (no paging)", description = "Returns every state without pagination. Use with caution on large datasets.")
-    @ApiResponse(responseCode = "200", description = "Full list of states")
+    @ApiResponse(responseCode = "200", description = "Full list of states",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = StateResponseDto.class))))
     @GetMapping("/all-states")
     public List<StateResponseDto> listAllStates() {
         return stateService.listAllStates();
@@ -41,8 +48,9 @@ public class StateController {
 
     @Operation(summary = "Get state by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "State found"),
-            @ApiResponse(responseCode = "404", description = "State not found")
+            @ApiResponse(responseCode = "200", description = "State found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = StateResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "State not found", content = @Content)
     })
     @GetMapping("/{id}")
     public StateResponseDto getById(
@@ -52,8 +60,9 @@ public class StateController {
 
     @Operation(summary = "Get state by 2-letter code", description = "Look up a state using its postal/state code, e.g. NY, CA, TX.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "State found"),
-            @ApiResponse(responseCode = "404", description = "State not found")
+            @ApiResponse(responseCode = "200", description = "State found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = StateResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "State not found", content = @Content)
     })
     @GetMapping("/code/{code}")
     public StateResponseDto getByCode(
@@ -63,8 +72,9 @@ public class StateController {
 
     @Operation(summary = "Get state by capital city name")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "State found"),
-            @ApiResponse(responseCode = "404", description = "No state has that capital")
+            @ApiResponse(responseCode = "200", description = "State found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = StateResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "No state has that capital", content = @Content)
     })
     @GetMapping("/capital/{capital}")
     public StateResponseDto getByCapital(
@@ -74,9 +84,10 @@ public class StateController {
 
     @Operation(summary = "Create a new state")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "State created"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body"),
-            @ApiResponse(responseCode = "404", description = "Referenced time zone ID not found")
+            @ApiResponse(responseCode = "200", description = "State created",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = StateResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Referenced time zone ID not found", content = @Content)
     })
     @PostMapping
     public StateResponseDto create(@Valid @RequestBody StateRequestDto dto) {
@@ -85,9 +96,10 @@ public class StateController {
 
     @Operation(summary = "Update an existing state by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "State updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body"),
-            @ApiResponse(responseCode = "404", description = "State or referenced time zone not found")
+            @ApiResponse(responseCode = "200", description = "State updated",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = StateResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content),
+            @ApiResponse(responseCode = "404", description = "State or referenced time zone not found", content = @Content)
     })
     @PutMapping("/{id}")
     public StateResponseDto update(
@@ -98,8 +110,8 @@ public class StateController {
 
     @Operation(summary = "Delete a state by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "State deleted"),
-            @ApiResponse(responseCode = "404", description = "State not found")
+            @ApiResponse(responseCode = "200", description = "State deleted", content = @Content),
+            @ApiResponse(responseCode = "404", description = "State not found", content = @Content)
     })
     @DeleteMapping("/{id}")
     public void delete(

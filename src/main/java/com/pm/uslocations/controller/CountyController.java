@@ -1,10 +1,13 @@
 package com.pm.uslocations.controller;
 
-import com.pm.uslocations.dto.response.CountyResponseDto;
 import com.pm.uslocations.dto.request.CountyRequestDto;
+import com.pm.uslocations.dto.response.CountyResponseDto;
 import com.pm.uslocations.service.CountyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +26,9 @@ public class CountyController {
     private final CountyService countyService;
 
     @Operation(summary = "List counties", description = "Returns a paged list of counties. Optionally filter by name or state.")
-    @ApiResponse(responseCode = "200", description = "List of counties")
+    @ApiResponse(responseCode = "200", description = "List of counties",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = CountyResponseDto.class))))
     @GetMapping
     public List<CountyResponseDto> list(
             @Parameter(description = "Search term — partial county name or exact FIPS code") @RequestParam(required = false) String q,
@@ -35,7 +40,9 @@ public class CountyController {
     }
 
     @Operation(summary = "List all counties (no paging)", description = "Returns every county without pagination. Use with caution on large datasets.")
-    @ApiResponse(responseCode = "200", description = "Full list of counties")
+    @ApiResponse(responseCode = "200", description = "Full list of counties",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = CountyResponseDto.class))))
     @GetMapping("/all-counties")
     public List<CountyResponseDto> listAllCounties() {
         return countyService.listAllCounties();
@@ -43,8 +50,9 @@ public class CountyController {
 
     @Operation(summary = "Get county by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "County found"),
-            @ApiResponse(responseCode = "404", description = "County not found")
+            @ApiResponse(responseCode = "200", description = "County found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CountyResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "County not found", content = @Content)
     })
     @GetMapping("/{id}")
     public CountyResponseDto getById(
@@ -54,8 +62,9 @@ public class CountyController {
 
     @Operation(summary = "Get county by FIPS code", description = "Look up a county using its 5-character FIPS code, e.g. 36001 for Albany County NY.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "County found"),
-            @ApiResponse(responseCode = "404", description = "County not found")
+            @ApiResponse(responseCode = "200", description = "County found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CountyResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "County not found", content = @Content)
     })
     @GetMapping("/fips/{countyFips}")
     public CountyResponseDto getByFips(
@@ -65,9 +74,10 @@ public class CountyController {
 
     @Operation(summary = "Create a new county")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "County created"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body"),
-            @ApiResponse(responseCode = "404", description = "Referenced state not found")
+            @ApiResponse(responseCode = "200", description = "County created",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CountyResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Referenced state not found", content = @Content)
     })
     @PostMapping
     public CountyResponseDto create(@Valid @RequestBody CountyRequestDto dto) {
@@ -76,9 +86,10 @@ public class CountyController {
 
     @Operation(summary = "Update an existing county by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "County updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body"),
-            @ApiResponse(responseCode = "404", description = "County or referenced state not found")
+            @ApiResponse(responseCode = "200", description = "County updated",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CountyResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content),
+            @ApiResponse(responseCode = "404", description = "County or referenced state not found", content = @Content)
     })
     @PutMapping("/{id}")
     public CountyResponseDto update(
@@ -90,8 +101,8 @@ public class CountyController {
 
     @Operation(summary = "Delete a county by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "County deleted"),
-            @ApiResponse(responseCode = "404", description = "County not found")
+            @ApiResponse(responseCode = "200", description = "County deleted", content = @Content),
+            @ApiResponse(responseCode = "404", description = "County not found", content = @Content)
     })
     @DeleteMapping("/{id}")
     public void delete(
