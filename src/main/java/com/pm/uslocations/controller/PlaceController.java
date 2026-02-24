@@ -6,6 +6,9 @@ import com.pm.uslocations.enums.PlaceType;
 import com.pm.uslocations.service.PlaceService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +27,9 @@ public class PlaceController {
     private final PlaceService placeService;
 
     @Operation(summary = "List places", description = "Returns a paged list of places. Filter by name, state, county, or place type.")
-    @ApiResponse(responseCode = "200", description = "List of places")
+    @ApiResponse(responseCode = "200", description = "List of places",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = PlaceResponseDto.class))))
     @GetMapping
     public List<PlaceResponseDto> list(
             @Parameter(description = "Search term — partial place name or exact FIPS code") @RequestParam(required = false) String q,
@@ -38,7 +43,9 @@ public class PlaceController {
     }
 
     @Operation(summary = "List all places (no paging)", description = "Returns every place without pagination. Use with caution on large datasets.")
-    @ApiResponse(responseCode = "200", description = "Full list of places")
+    @ApiResponse(responseCode = "200", description = "Full list of places",
+            content = @Content(mediaType = "application/json",
+                    array = @ArraySchema(schema = @Schema(implementation = PlaceResponseDto.class))))
     @GetMapping("/all-places")
     public List<PlaceResponseDto> listAll() {
         return placeService.listAllPlaces();
@@ -46,8 +53,9 @@ public class PlaceController {
 
     @Operation(summary = "Get place by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place found"),
-            @ApiResponse(responseCode = "404", description = "Place not found")
+            @ApiResponse(responseCode = "200", description = "Place found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlaceResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "Place not found", content = @Content)
     })
     @GetMapping("/{id}")
     public PlaceResponseDto getById(
@@ -57,8 +65,9 @@ public class PlaceController {
 
     @Operation(summary = "Get place by FIPS code", description = "Look up a place using its 7-character FIPS code (state(2) + place(5)), e.g. 3601000 for Albany NY.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place found"),
-            @ApiResponse(responseCode = "404", description = "Place not found")
+            @ApiResponse(responseCode = "200", description = "Place found",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlaceResponseDto.class))),
+            @ApiResponse(responseCode = "404", description = "Place not found", content = @Content)
     })
     @GetMapping("/fips/{placeFips}")
     public PlaceResponseDto getByFips(
@@ -68,9 +77,10 @@ public class PlaceController {
 
     @Operation(summary = "Create a new place")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place created"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body"),
-            @ApiResponse(responseCode = "404", description = "Referenced state or county not found")
+            @ApiResponse(responseCode = "200", description = "Place created",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlaceResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Referenced state or county not found", content = @Content)
     })
     @PostMapping
     public PlaceResponseDto create(@Valid @RequestBody PlaceRequestDto dto) {
@@ -79,9 +89,10 @@ public class PlaceController {
 
     @Operation(summary = "Update an existing place by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place updated"),
-            @ApiResponse(responseCode = "400", description = "Invalid request body"),
-            @ApiResponse(responseCode = "404", description = "Place, state, or county not found")
+            @ApiResponse(responseCode = "200", description = "Place updated",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = PlaceResponseDto.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Place, state, or county not found", content = @Content)
     })
     @PutMapping("/{id}")
     public PlaceResponseDto update(
@@ -92,8 +103,8 @@ public class PlaceController {
 
     @Operation(summary = "Delete a place by ID")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Place deleted"),
-            @ApiResponse(responseCode = "404", description = "Place not found")
+            @ApiResponse(responseCode = "200", description = "Place deleted", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Place not found", content = @Content)
     })
     @DeleteMapping("/{id}")
     public void delete(
