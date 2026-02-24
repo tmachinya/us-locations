@@ -1,0 +1,138 @@
+@host = http://localhost:8080
+
+### Retrieve Specific States
+GET {{host}}/api/states?q=Texas&limit=20&offset=0
+
+### Retrieve All States
+GET {{host}}/api/states/all-states
+
+### Selecting 1 state
+GET {{host}}/api/states/5
+
+### Get state by Capital
+GET {{host}}/api/states/capital/Austin
+
+### Updating a state
+PUT {{host}}/api/states/5
+Content-Type: application/json
+
+{
+  "stateCode": "MD",
+  "name": "Maryland",
+  "fips": "60",
+  "postalAbbr": "MD",
+  "capital": "Bladensburg",
+  "areaSqMi": 630000,
+  "populationEst": 60000,
+  "timeZoneIds": [1,2]
+}
+
+
+### Inserting a state / creating a state
+POST {{host}}/api/states
+Content-Type: application/json
+
+{
+  "stateCode": "MD",
+  "name": "Maryland",
+  "fips": "60",
+  "postalAbbr": "MD",
+  "capital": "Silver Spring",
+  "areaSqMi": 45866554,
+  "populationEst": 60000,
+  "timeZoneIds": [1,2]
+}
+
+### Inserting a new state/creating a state
+POST {{host}}/api/states
+Content-Type: application/json
+
+{
+  "stateCode": "CO",
+  "name": "Colorado",
+  "fips": "08",
+  "postalAbbr": "CO",
+  "capital": "Denver",
+  "areaSqMi": 104094,
+  "populationEst": 5800000,
+  "timeZoneIds": [2]
+}
+
+
+### Deleting a state
+DELETE {{host}}/api/states/5
+
+### Retrieve Counties (with optional search & state filter)
+GET {{host}}/api/counties?q=Albany&stateId=1&limit=20&offset=0
+
+### Retrieve all counties
+GET {{host}}/api/counties/all-counties
+
+### Retrieve a County by FIPS
+GET {{host}}/api/counties/fips/36001
+
+### Insert / Create a County
+POST {{host}}/api/counties
+Content-Type: application/json
+
+{
+  "stateId": 4,
+  "name": "Prince George",
+  "countyFips": "50001",
+  "seat": "Prince George"
+}
+
+### Creating a county called Boulder County in Colorado.
+POST {{host}}/api/counties
+Content-Type: application/json
+
+{
+  "stateId": 5,
+  "name": "Boulder County",
+  "countyFips": "08013",
+  "seat": "Boulder"
+}
+### Update an Existing County
+PUT {{host}}/api/counties/4
+Content-Type: application/json
+
+{
+  "stateId": 4,
+  "name": "Prince George",
+  "countyFips": "50001",
+  "seat": "Prince"
+}
+
+
+### Retrieve All Places
+GET {{host}}/api/places/all-places
+
+### Retrieve by ID
+GET {{host}}/api/places/1
+
+### Retrieve by FIPS Code
+GET {{host}}/api/places/fips/0644000
+
+### Retrieve All Cities in a State
+GET {{host}}/api/places?stateId=1&type=CITY
+
+### Create a Place
+POST {{host}}/api/places
+Content-Type: application/json
+
+{
+  "stateId": 2,
+  "countyId": 2,
+  "name": "Boulder",
+  "placeType": "CITY",
+  "placeFips": "08013A1",
+  "latitude": 40.015,
+  "longitude": -105.2705,
+  "elevationFt": 5430
+}
+
+### Delete a Place
+DELETE {{host}}/api/places/5
+
+### Get the counties which belong to a state
+http://localhost:8080/api/counties?stateId=11&limit=50&offset=0

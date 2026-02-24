@@ -1,0 +1,8 @@
+**Insertion of a new record**
+Web application (UI)- in the form DTO -> REST API (Controller) -> invokes Service Layer (interface) -> Service implementation -> Mapper (converts from DTO to Entity (Model)) -> Repository -> Database
+
+**Retrieval of all records**
+Web application (UI - invokes a component) -> REST API(Controller) -> Service Layer (interface) -> Service implementation -> Repository->Mapper (Model to DTO)->Service->Controller->Web application
+
+
+
